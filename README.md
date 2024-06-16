@@ -15,3 +15,9 @@ Update the start script to the following:
 ts-node-dev --poll src/index.ts
 ```
 
+Security Warning:
+![alt text](READMEIMG/image.png)
+
+Reason: 
+Type thisisunsafe
+
