@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: tuwnguyendocker/auth
+          image: us.gcr.io/ticketing-dev-433712/auth
 ---
 apiVersion: v1
 kind: Service
