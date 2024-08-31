@@ -1,7 +1,7 @@
 import express from 'express';
-
-//https://www.npmjs.com/package/express-async-errors
-//Error handling async error
+import mongoose from 'mongoose'
+// https://www.npmjs.com/package/express-async-errors
+// Error handling async error
 import 'express-async-errors'
 import { json } from 'body-parser';
 
@@ -27,6 +27,18 @@ app.all('*', async () => {
 
 app.use(errorHandler)
 
-app.listen(3000, () => {
-  console.log('listening on port 3000!!!');
-});
+const start = async() => {
+  try {
+    await mongoose.connect('mongodb://auth-mongo-srv:27017/auth')
+    console.log('Connected to MongoDB')
+  } catch (error) {
+    console.error(error)
+  }
+
+  app.listen(3000, () => {
+    console.log('listening on port 3000!!!');
+  });
+}
+
+start()
+
