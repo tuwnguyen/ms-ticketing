@@ -1,4 +1,8 @@
 import express from 'express';
+
+//https://www.npmjs.com/package/express-async-errors
+//Error handling async error
+import 'express-async-errors'
 import { json } from 'body-parser';
 
 import { currentUserRouter } from './router/current-user'
@@ -17,7 +21,7 @@ app.use(signinRouter)
 app.use(signoutRouter)
 app.use(signupRouter)
 
-app.all('*', () => {
+app.all('*', async () => {
   throw new NotFoundError()
 })
 
