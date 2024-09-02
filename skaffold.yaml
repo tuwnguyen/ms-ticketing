@@ -2,7 +2,7 @@ apiVersion: skaffold/v4beta11
 kind: Config
 build:
   artifacts:
-    - image: us.gcr.io/ticketing-dev-433712/auth
+    - image: tuwnguyendocker/auth
       context: auth
       sync:
         manual:
@@ -10,12 +10,32 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-  # local:
-  #   push: false
-  googleCloudBuild:
-    projectId: ticketing-dev-433712
+  local:
+    push: false
 manifests:
   rawYaml:
     - ./infra/k8s/*
 deploy:
   kubectl: {}
+
+# apiVersion: skaffold/v4beta11
+# kind: Config
+# build:
+#   artifacts:
+#     - image: us.gcr.io/ticketing-dev-433712/auth
+#       context: auth
+#       sync:
+#         manual:
+#           - src: src/**/*.ts
+#             dest: .
+#       docker:
+#         dockerfile: Dockerfile
+#   # local:
+#   #   push: false
+#   googleCloudBuild:
+#     projectId: ticketing-dev-433712
+# manifests:
+#   rawYaml:
+#     - ./infra/k8s/*
+# deploy:
+#   kubectl: {}
