@@ -1,6 +1,11 @@
 import mongoose from 'mongoose'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import { app } from '../app'
+import request from 'supertest'
+
+declare global {
+  var signin: () => Promise<string[]>;
+}
 
 let mongod: MongoMemoryServer;
 
@@ -34,3 +39,15 @@ afterAll(async () => {
   }
   await mongoose.connection.close();
 });
+
+global.signin = async () => {
+  const email = 'test@gmail.com'
+  const password = 'password'
+
+  const response = await request(app)
+    .post('/api/users/signup')
+    .send({email, password})
+    .expect(201)
+  const cookie = response.get('Set-Cookie') as string[]
+  return cookie
+}
