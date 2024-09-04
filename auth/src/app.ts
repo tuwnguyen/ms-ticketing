@@ -17,7 +17,8 @@ app.set('trust proxy', true);
 app.use(
   cookieSession({
     signed: false,
-    secure: true
+    // making a request to our server over an HTTPS connection
+    secure: process.env.NODE_ENV !== 'test'
   })
 );
 

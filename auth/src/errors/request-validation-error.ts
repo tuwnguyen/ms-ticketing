@@ -16,14 +16,16 @@ export class RequestValidationError extends CustomError{
   }
 
   serializeErrors() {
-    return this.errors
-      .filter(error => error.type === 'field')
-      .map(error => {
-          return { message: error.msg, field: error.path}
-      })
+    return this.errors.map(error => {
+      if ('path' in error) {
+        return { message: error.msg, field: error.path };
+      } else {
+        return { message: error.msg };
+      }
+    });
   }
 }
-
+// 
 // Explanation:
 // 1. We define a custom error class named RequestValidationError that extends the built-in Error class.
 // 2. The constructor takes an array of ValidationError objects as a parameter, which will contain details about validation failures.
