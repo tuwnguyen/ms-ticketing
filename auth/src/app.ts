@@ -4,13 +4,13 @@ import express from 'express';
 import 'express-async-errors'
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
+import { errorHandler, NotFoundError } from '@tuwtickets/common'
 
 import { currentUserRouter } from './router/current-user'
 import { signinRouter } from './router/signin'
 import { signoutRouter } from './router/signout'
 import { signupRouter } from './router/signup'
-import { errorHandler } from './middlewares/error-handler'
-import { NotFoundError } from './errors/not-found-error';
+
 
 const app = express();
 app.set('trust proxy', true);
