@@ -1,55 +1,60 @@
-import mongoose from 'mongoose'
-import { Password } from '../services/password'
+import mongoose from "mongoose";
+import { Password } from "../services/password";
 
 interface UserAttrs {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 // An interface that describes the properties that a User Model has
-interface UserModel extends mongoose.Model<UserDoc>{
-  build(attrs: UserAttrs): UserDoc
+interface UserModel extends mongoose.Model<UserDoc> {
+  build(attrs: UserAttrs): UserDoc;
 }
 
 // An interface that describes the properties that a User Document has
 interface UserDoc extends mongoose.Document {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
   }
-}, {
-  toJSON: {
-    transform(doc, ret) {
-      ret.id = ret._id
-      delete ret._id
-      delete ret.password
-      delete ret.__v
-    }
-  }
-})
+);
 
 // pre Hook in Mongoose
-userSchema.pre('save', async function(done) {
-   if (this.isModified('password')) {
-    const hashed = await Password.toHash(this.get('password'))
-    this.set('password', hashed)
-   }
-   done()
-})
+userSchema.pre("save", async function (done) {
+  if (this.isModified("password")) {
+    const hashed = await Password.toHash(this.get("password"));
+    this.set("password", hashed);
+  }
+  done();
+});
 
+// create build function allow Typescript validate and check the properties
+// when create a new record
 userSchema.statics.build = (attrs: UserAttrs) => {
-  return new User(attrs)
-}
+  return new User(attrs);
+};
 
-const User = mongoose.model<UserDoc, UserModel>('User', userSchema)
+const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 
-export { User }
+export { User };
