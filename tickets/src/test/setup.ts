@@ -1,26 +1,24 @@
-import mongoose from 'mongoose'
-import { MongoMemoryServer } from 'mongodb-memory-server'
-import { app } from '../app'
-import request from 'supertest'
-
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
+import jwt from "jsonwebtoken";
 declare global {
-  var signin: () => Promise<string[]>;
+  var signin: () => string[];
 }
 
 let mongod: MongoMemoryServer;
 
 beforeAll(async () => {
-  process.env.JWT_KEY = "asdasd"
+  process.env.JWT_KEY = "asdasd";
   mongod = await MongoMemoryServer.create();
   const mongoUri = mongod.getUri();
   await mongoose.connect(mongoUri);
 
-  mongoose.connection.on('error', (error) => {
-    console.error('MongoDB connection error:', error);
+  mongoose.connection.on("error", (error) => {
+    console.error("MongoDB connection error:", error);
   });
 
-  mongoose.connection.once('open', () => {
-    console.log('Connected to MongoDB Memory Server');
+  mongoose.connection.once("open", () => {
+    console.log("Connected to MongoDB Memory Server");
   });
 });
 
@@ -31,7 +29,7 @@ beforeEach(async () => {
       await collection.deleteMany({});
     }
   }
-})
+});
 
 afterAll(async () => {
   if (mongod) {
@@ -40,14 +38,19 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signin = async () => {
-  const email = 'test@gmail.com'
-  const password = 'password'
+global.signin = () => {
+  const payload = {
+    id: new mongoose.Types.ObjectId().toHexString(),
+    email: "test@test.com",
+  };
+  const token = jwt.sign(payload, process.env.JWT_KEY!);
 
-  const response = await request(app)
-    .post('/api/users/signup')
-    .send({email, password})
-    .expect(201)
-  const cookie = response.get('Set-Cookie') as string[]
-  return cookie
-}
+  const sessionJSON = JSON.stringify({ jwt: token });
+
+  // const base64 = btoa(session);
+  const base64 = Buffer.from(sessionJSON).toString("base64");
+
+  const cookie = `session=${base64}`;
+
+  return [cookie];
+};
