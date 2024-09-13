@@ -10,7 +10,7 @@ import {
 
 import { Ticket } from "../models/ticket";
 import { natsWrapper } from "../nats-wrapper";
-import { TicketUpdatedPublisher } from "../publisher/ticket-updated-publisher";
+import { TicketUpdatedPublisher } from "../events/publisher/ticket-updated-publisher";
 
 const router = express.Router();
 
