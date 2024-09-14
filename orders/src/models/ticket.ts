@@ -49,12 +49,12 @@ ticketSchema.set("versionKey", "version");
 
 ticketSchema.plugin(updateIfCurrentPlugin);
 // ALTERNATIVE WAY to customizes the find-and-update operation (save) to look for the correct version
-ticketSchema.pre("save", function (done) {
-  this.$where = {
-    version: this.get("version") - 1,
-  };
-  done();
-});
+// ticketSchema.pre("save", function (done) {
+//   this.$where = {
+//     version: this.get("version") - 1,
+//   };
+//   done();
+// });
 
 ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
   return Ticket.findOne({ _id: event.id, version: event.version - 1 });
