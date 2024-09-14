@@ -6,6 +6,7 @@ import {
   requireAuth,
   NotFoundError,
   NotAuthorizedError,
+  BadRequestError,
 } from "@tuwtickets/common";
 
 import { Ticket } from "../models/ticket";
@@ -27,6 +28,10 @@ router.put(
   async (req: Request, res: Response) => {
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) throw new NotFoundError();
+
+    if (ticket.orderId)
+      throw new BadRequestError("Cannot edit a reserved ticket!");
+
     if (ticket.userId !== req.currentUser?.id) throw new NotAuthorizedError();
     const { title, price } = req.body;
     ticket.set({ title, price });
