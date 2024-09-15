@@ -11,6 +11,7 @@ let mongod: MongoMemoryServer;
 
 beforeAll(async () => {
   process.env.JWT_KEY = "asdasd";
+  // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   mongod = await MongoMemoryServer.create();
   const mongoUri = mongod.getUri();
   await mongoose.connect(mongoUri);

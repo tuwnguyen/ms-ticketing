@@ -83,4 +83,14 @@ it("returns a 201 with valid input", async () => {
   expect(chargeOptions.source).toEqual("tok_visa");
   expect(chargeOptions.amount).toEqual(10 * 100);
   expect(chargeOptions.currency).toEqual("usd");
+
+  // ::Realistic test Stripe charge::
+  // (*) Must define STRIPE_KEY env in setup.ts and delete jest.mock("../../stripe"); and use real Stripe API
+
+  // const stripeCharges = await stripe.charges.list({ limit: 50 });
+  // const stripeCharge = stripeCharges.data.find((charge) => {
+  //   return charge.amount === price * 100;
+  // });
+  // expect(stripeCharge).toBeDefined();
+  // expect(stripeCharge!.currency).toEqual('usd');
 });
