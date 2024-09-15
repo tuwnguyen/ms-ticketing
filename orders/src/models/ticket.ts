@@ -26,11 +26,11 @@ export interface TicketDoc extends mongoose.Document {
 const ticketSchema = new mongoose.Schema(
   {
     title: {
-      require: true,
+      required: true,
       type: String,
     },
     price: {
-      require: true,
+      required: true,
       type: Number,
       min: 0,
     },

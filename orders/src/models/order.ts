@@ -27,11 +27,11 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 const orderSchema = new mongoose.Schema(
   {
     userId: {
-      require: true,
+      required: true,
       type: String,
     },
     status: {
-      require: true,
+      required: true,
       type: String,
       enum: Object.values(OrderStatus),
       default: OrderStatus.Created,
