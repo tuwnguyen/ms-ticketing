@@ -8,9 +8,7 @@ const Landing = ({ currentUser }) => {
   );
 };
 
-Landing.getInitialProps = async (context) => {
-  const client = buildClient(context);
-  const { data } = await client.get("/api/users/currentuser");
-  return data;
+Landing.getInitialProps = async (context, client, currentUser) => {
+  return {};
 };
 export default Landing;
